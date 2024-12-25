@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <title>Banking System | Login & Registration</title>
+  </head>
+  <body>
+    <div class="wrapper">
+      <nav class="nav">
+        <div class="nav-logo"><p>Bank OF Khazar</p></div>
+        <div class="nav-button">
+          <button class="btn white-btn" onclick="showLogin()">Sign In</button>
+          <button class="btn" onclick="showRegister()">Sign Up</button>
+        </div>
+      </nav>
+      <div id="notification" class="notification"></div>
+      <div class="form-box">
+        <div class="form-container" id="login">
+          <div class="top">
+            <span
+              >Don't have an account?
+              <a href="#" onclick="showRegister()">Sign Up</a></span
+            >
+            <header>Login</header>
+          </div>
+          <div class="input-box">
+            <input
+              type="text"
+              id="loginEmail"
+              class="input-field"
+              placeholder="Email"
+            />
+            <i class="bx bx-user"></i>
+          </div>
+          <div class="input-box">
+            <input
+              type="password"
+              id="loginPassword"
+              class="input-field"
+              placeholder="Password"
+            />
+            <i class="bx bx-lock-alt"></i>
+          </div>
+          <div class="input-box">
+            <input
+              type="submit"
+              class="submit"
+              value="Sign In"
+              onclick="handleLogin()"
+            />
+          </div>
+          <div class="two-col">
+            <div class="one">
+              <input type="checkbox" id="login-check" />
+              <label for="login-check"> Remember Me</label>
+            </div>
+            <div class="two">
+              <label
+                ><a href="#" onclick="forgotPassword()"
+                  >Forgot password?</a
+                ></label
+              >
+            </div>
+          </div>
+        </div>
+        <div
+          class="form-container"
+          id="forgotPasswordForm"
+          style="display: none"
+        >
+          <h3>Forgot Password</h3>
+          <p>Enter your email address, and we'll send you a reset link.</p>
+          <div class="input-box">
+            <input
+              type="email"
+              id="forgotEmail"
+              class="input-field"
+              placeholder="Email Address"
+            />
+            <i class="bx bx-envelope"></i>
+          </div>
+          <div class="input-box">
+            <button class="submit" onclick="handleForgotPassword()">
+              Submit
+            </button>
+          </div>
+          <div class="top">
+            <span
+              >Back to
+              <a href="javascript:void(0)" onclick="showLogin()">Login</a></span
+            >
+          </div>
+        </div>
+        <div class="form-container" id="register" style="display: none">
+          <div class="top">
+            <span
+              >Have an account?
+              <a href="#" onclick="showLogin()">Login</a></span
+            >
+            <header>Sign Up</header>
+          </div>
+          <div class="input-box">
+            <input
+              type="text"
+              id="firstName"
+              class="input-field"
+              placeholder="Firstname"
+            />
+            <i class="bx bx-user"></i>
+          </div>
+          <div class="input-box">
+            <input
+              type="text"
+              id="lastName"
+              class="input-field"
+              placeholder="Lastname"
+            />
+            <i class="bx bx-user"></i>
+          </div>
+          <div class="input-box">
+            <input
+              type="email"
+              id="registerEmail"
+              class="input-field"
+              placeholder="Email"
+            />
+            <i class="bx bx-envelope"></i>
+          </div>
+          <div class="input-box">
+            <input
+              type="tel"
+              id="registerNumber"
+              class="input-field"
+              placeholder="Phone Number"
+            />
+            <i class="bx bx-phone"></i>
+          </div>
+          <div class="input-box">
+            <input
+              type="password"
+              id="registerPassword"
+              class="input-field"
+              placeholder="Password"
+            />
+            <i class="bx bx-lock-alt"></i>
+          </div>
+          <div class="input-box">
+            <input
+              type="password"
+              id="rePassword"
+              class="input-field"
+              placeholder="Re-Password"
+            />
+            <i class="bx bx-lock-alt"></i>
+          </div>
+          <div class="input-box">
+            <input
+              type="text"
+              id="registerFin"
+              pattern="[A-Za-z0-9]+"
+              class="input-field"
+              placeholder="Fin Code"
+            />
+            <i class="bx bx-lock-alt"></i>
+          </div>
+          <div class="input-box">
+            <input
+              type="submit"
+              class="submit"
+              value="Register"
+              onclick="handleRegister()"
+            />
+          </div>
+          <div class="two-col">
+            <div class="one">
+              <input type="checkbox" id="register-check" />
+              <label for="register-check"> Remember Me</label>
+            </div>
+            <div class="two">
+              <label
+                ><a href="javascript:void(0)" onclick="openModal()"
+                  >Terms & Conditions</a
+                ></label
+              >
+            </div>
+            <div id="termsModal" class="modal">
+              <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2>Terms and Conditions</h2>
+                <p>
+                  Welcome to Bank OF Khazar. By accessing our platform, you
+                  agree to the following terms and conditions:
+                </p>
+                <ul>
+                  <li>
+                    All account holders must provide accurate and complete
+                    information.
+                  </li>
+                  <li>
+                    Any unauthorized access to the platform is strictly
+                    prohibited.
+                  </li>
+                  <li>
+                    The bank reserves the right to modify terms without prior
+                    notice.
+                  </li>
+                  <li>Privacy of user data is our top priority.</li>
+                </ul>
+                <p>For further details, please contact our customer service.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

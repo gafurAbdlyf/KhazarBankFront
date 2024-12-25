@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bank OF Khazar Card</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap");
+
+      body {
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #e4e6eb;
+      }
+
+      .card-container {
+        position: relative;
+        width: 420px;
+        height: 260px;
+        background: linear-gradient(135deg, #0f0f1e, #2d2d44);
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        color: white;
+        padding: 20px;
+        overflow: hidden;
+      }
+
+      .card-container::before {
+        content: "";
+        position: absolute;
+        top: -50px;
+        right: -50px;
+        width: 200px;
+        height: 200px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        filter: blur(50px);
+      }
+
+      .card-container .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #f0b90b;
+      }
+
+      .card-container .logo img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: 2px solid #f0b90b;
+      }
+
+      .card-number {
+        font-size: 1.8rem;
+        letter-spacing: 4px;
+        margin: 20px 0;
+      }
+
+      .details {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .details .card-holder {
+        text-transform: uppercase;
+        font-size: 0.9rem;
+        font-weight: 600;
+      }
+
+      .details .expiry-date,
+      .cvv {
+        font-size: 0.9rem;
+        text-align: right;
+      }
+
+      .visa-logo {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        font-size: 2rem;
+        color: #f0b90b;
+      }
+
+      .copy-button {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        padding: 10px 20px;
+        background: #f0b90b;
+        color: black;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      .copy-button:hover {
+        background: #dba20a;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card-container">
+      <div class="logo">
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNGl7Synl7D1nHBb1NivGfGHf-eSKRH6EsuQ&s"
+          alt="Logo"
+        />
+        Bank OF Khazar
+      </div>
+      <div class="card-number" id="cardNumber">1111 1111 1111 1111</div>
+      <div class="details">
+        <div class="card-holder" id="cardHolder">Farid Alakbarov</div>
+        <div class="expiry-date" id="expiryDate">Valid: 11/11</div>
+        <div class="cvv" id="cvv">CVV: 333</div>
+      </div>
+      <div class="visa-logo">VISA</div>
+      <button class="copy-button" onclick="copyCardNumber()">Copy</button>
+    </div>
+
+    <script>
+      function copyCardNumber() {
+        const cardNumber = document.getElementById("cardNumber").textContent
+        navigator.clipboard
+          .writeText(cardNumber)
+          .then(() => {
+            alert("Card number copied to clipboard!")
+          })
+          .catch((err) => {
+            alert("Failed to copy card number: " + err)
+          })
+      }
+
+      const cardInfo = JSON.parse(localStorage.getItem("cardInfo"))
+      const userInfo = JSON.parse(localStorage.getItem("userInfo"))
+
+      if (cardInfo && userInfo) {
+        document.getElementById("cardNumber").textContent = formatCardNumber(
+          cardInfo.cardNumber
+        )
+        document.getElementById("cvv").textContent = `CVV: ${cardInfo.cvv}`
+        document.getElementById(
+          "cardHolder"
+        ).textContent = `${userInfo.firstName} ${userInfo.lastName}`
+        document.getElementById(
+          "expiryDate"
+        ).textContent = `Valid: ${formatExpiryDate(cardInfo.expiryDate)}`
+      }
+
+      function formatCardNumber(cardNumber) {
+        return cardNumber.replace(/(\d{4})(?=\d)/g, "$1 ")
+      }
+
+      function formatExpiryDate(expiryDate) {
+        const date = new Date(expiryDate)
+        const month = (date.getMonth() + 1).toString().padStart(2, "0")
+        const year = date.getFullYear().toString().slice(-2)
+        return `${month}/${year}`
+      }
+    </script>
+  </body>
+</html>

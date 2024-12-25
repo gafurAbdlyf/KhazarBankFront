@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+    />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Two-Factor Authentication</title>
+    <style>
+      body {
+        background: url("https://www.shutterstock.com/image-vector/banking-technology-conceptisometric-illustration-bank-600nw-2060538899.jpg");
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #111;
+        color: white;
+      }
+      .container {
+        text-align: center;
+      }
+      h1 {
+        font-size: 24px;
+        margin-bottom: 20px;
+      }
+      .inputs {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+      .inputs input {
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        text-align: center;
+        border: 2px solid #555;
+        border-radius: 8px;
+        outline: none;
+        color: #ffffff;
+        background-color: #333;
+        font-weight: bold;
+        caret-color: transparent;
+      }
+      .inputs input:focus {
+        border-color: #00aaff;
+        box-shadow: 0 0 5px #00aaff;
+      }
+      .error-message {
+        color: red;
+        font-size: 14px;
+        margin-top: 10px;
+        display: none;
+      }
+      .code-notification {
+        margin-top: 25px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Two-Factor Authentication</h1>
+      <div class="inputs">
+        <input
+          type="text"
+          maxlength="1"
+          oninput="moveFocus(this, 0)"
+          onkeydown="handleBackspace(event, 0)"
+        />
+        <input
+          type="text"
+          maxlength="1"
+          oninput="moveFocus(this, 1)"
+          onkeydown="handleBackspace(event, 1)"
+        />
+        <input
+          type="text"
+          maxlength="1"
+          oninput="moveFocus(this, 2)"
+          onkeydown="handleBackspace(event, 2)"
+        />
+        <input
+          type="text"
+          maxlength="1"
+          oninput="moveFocus(this, 3)"
+          onkeydown="handleBackspace(event, 3)"
+        />
+        <input
+          type="text"
+          maxlength="1"
+          oninput="moveFocus(this, 4)"
+          onkeydown="handleBackspace(event, 4)"
+        />
+        <input
+          type="text"
+          maxlength="1"
+          oninput="moveFocus(this, 5)"
+          onkeydown="handleBackspace(event, 5)"
+        />
+      </div>
+      <div class="error-message" id="error-message">
+        Only digits are acceptable!
+      </div>
+      <div class="code-notification" id="code-notification">
+        A message with a verification code has been sent to your device. Enter
+        the code to continue.
+      </div>
+    </div>
+    <script>
+      const inputs = document.querySelectorAll(".inputs input")
+      const errorMessage = document.getElementById("error-message")
+
+      function moveFocus(current, index) {
+        if (current.value && index < inputs.length - 1) {
+          inputs[index + 1].focus()
+        }
+      }
+
+      function handleBackspace(event, index) {
+        if (event.key === "Backspace" && !event.target.value && index > 0) {
+          inputs[index - 1].focus()
+        }
+      }
+
+      inputs.forEach((input) => {
+        input.addEventListener("input", (e) => {
+          if (/[^0-9]/.test(e.target.value)) {
+            e.target.value = ""
+            showError()
+          } else {
+            hideError()
+          }
+        })
+      })
+
+      function showError() {
+        errorMessage.style.display = "block"
+        setTimeout(() => {
+          errorMessage.style.display = "none"
+        }, 2000)
+      }
+
+      function hideError() {
+        errorMessage.style.display = "none"
+      }
+
+      async function handleVerification(event) {
+        if (event.key === "Enter") {
+          const verificationCode = Array.from(inputs)
+            .map((input) => input.value)
+            .join("")
+
+          if (verificationCode.length !== 6) {
+            alert("Please complete the verification code.")
+            return
+          }
+
+          try {
+            const response = await fetch(
+              `http://167.172.150.140:8080/api/Auth/VerificationCodeCheckingForgetPassword?code=${verificationCode}`,
+              {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+              }
+            )
+
+            if (!response.ok) {
+              const errorData = await response.json()
+              alert(
+                errorData.message || "Verification failed. Please try again."
+              )
+              return
+            }
+
+            const responseData = await response.json()
+            console.log("Verification successful:", responseData)
+            alert("Verification successful!")
+            window.location.href = "forgetPassword.html"
+          } catch (error) {
+            console.error("Error during verification:", error)
+            alert("An error occurred. Please try again later.")
+          }
+        }
+      }
+
+      document.addEventListener("keydown", handleVerification)
+    </script>
+  </body>
+</html>
