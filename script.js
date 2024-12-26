@@ -154,9 +154,7 @@ async function handleRegister() {
     }
     const data = await response.json()
     const pashHash = data.currentUser.passHash
-    const userId = data.currentUser.userId
     localStorage.setItem("pashHash", pashHash)
-    localStorage.setItem("userId", userId)
     localStorage.setItem("signupData", JSON.stringify(signupData))
     window.location.href = "verification.html"
   } catch (error) {

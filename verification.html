@@ -176,7 +176,6 @@
                   lastName: signupData.lastName,
                   phoneNumber: signupData.phoneNumber,
                   PassHash,
-                  userId,
                   verificationCode,
                 }),
               }
@@ -191,6 +190,7 @@
             }
 
             const responseData = await response.json()
+            localStorage.setItem("userId", responseData.currentUser.userId)
             console.log("Verification successful:", responseData)
             alert("Verification successful!")
             window.location.href = "home.html"

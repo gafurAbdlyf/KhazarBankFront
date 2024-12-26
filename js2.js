@@ -1,4 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
+  const isPageRefreshed = localStorage.getItem("isPageRefreshed")
+
+  if (!isPageRefreshed) {
+    localStorage.setItem("isPageRefreshed", "true")
+    window.location.reload()
+  } else {
+    GetUserBankInfo()
+    GetUserTransaction()
+  }
   let cardInfo = JSON.parse(localStorage.getItem("cardInfo"))
   const balance = cardInfo.balance
   let transactionHistory = []
@@ -52,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
           if (response.ok) {
             const result = await response.json()
             GetUserTransaction()
-            GetUserBankInfo()
             alert(`Top-up successful!`)
             console.log("Top-Up Result:", result)
           } else {
@@ -98,7 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const result = await response.json()
             alert("Transfer successful!")
             GetUserTransaction()
-            GetUserBankInfo()
             console.log("Transfer Result:", result)
           } else {
             const error = await response.json()
@@ -282,7 +289,6 @@ async function GetUserBankInfo() {
     alert(`Failed to fetch user bank information. Please try again. ${error}`)
   }
 }
-GetUserBankInfo()
 
 async function GetUserTransaction() {
   try {
@@ -334,10 +340,5 @@ async function GetUserTransaction() {
     }
   } catch (error) {
     console.error("Error fetching transaction information:", error)
-    alert(
-      `Failed to fetch user transactions. Please try again. ${error.message}`
-    )
   }
 }
-
-GetUserTransaction()
